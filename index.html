@@ -1,1 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WP6 - Connecting Bhutan and Laos through Digital Bridges</title>
+    <style>
+        :root {
+            --primary: #EC1550;
+            --secondary: #F69AB0;
+            --body: #F8F3F0;
+            --text: #1D1D1B;
+            --secondary-dark: #5E0023;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--body);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .project-category {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Logos Section */
+        .logos-section {
+            background: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logos-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            height: 80px;
+            object-fit: contain;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--secondary-dark);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--primary);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 0;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transform: perspective(1000px) rotateX(0deg);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: perspective(1000px) rotateX(5deg);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Countries Section */
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .country-card {
+            background: linear-gradient(135deg, rgba(236, 21, 80, 0.1), rgba(246, 154, 176, 0.1));
+            border: 2px solid var(--secondary);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .country-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(236, 21, 80, 0.2);
+        }
+
+        .country-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Partners Grid */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .partner-card {
+            background: var(--body);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .partner-card:hover {
+            border-left-color: var(--secondary);
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .partner-name {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .partner-country {
+            color: var(--secondary-dark);
+            font-style: italic;
+        }
+
+        /* Training Cards */
+        .training-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .training-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .training-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-top-color: var(--secondary);
+        }
+
+        .training-title {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            margin-left: 50px;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -37px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            background: var(--primary);
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .timeline-date {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* Challenges Section */
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .challenge-card {
+            background: linear-gradient(135deg, rgba(94, 0, 35, 0.05), rgba(236, 21, 80, 0.05));
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--secondary-dark);
+        }
+
+        .challenge-title {
+            color: var(--secondary-dark);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* SDG Tags */
+        .sdg-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .sdg-tag {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .logos-container {
+                gap: 1.5rem;
+            }
+
+            .logo {
+                height: 60px;
+            }
+
+            .nav-container {
+                gap: 1rem;
+            }
+
+            .timeline {
+                margin-left: -20px;
+            }
+
+            .timeline::before {
+                left: 15px;
+            }
+
+            .timeline-item {
+                margin-left: 45px;
+            }
+
+            .timeline-marker {
+                left: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .partners-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .training-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section:nth-child(even) { animation-delay: 0.2s; }
+        .section:nth-child(odd) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="project-category">WP6 - 5th Call</div>
+                <h1 class="project-title">Digital Bridges</h1>
+                <p class="project-subtitle">Connecting Bhutan and Laos through Digital Bridges to Enhance Human Capital</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="logos-section">
+        <div class="container">
+            <div class="logos-container">
+                <img src="images/logos/tein-logo.png" alt="TEIN Cooperation Center" class="logo">
+                <img src="images/logos/asia-connect-logo.png" alt="Asi@Connect" class="logo">
+                <img src="images/logos/eu-logo.png" alt="European Union" class="logo">
+            </div>
+        </div>
+    </section>
+
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <a href="#overview" class="nav-link">Overview</a>
+                <a href="#objectives" class="nav-link">Objectives</a>
+                <a href="#partners" class="nav-link">Partners</a>
+                <a href="#training" class="nav-link">Training</a>
+                <a href="#outcomes" class="nav-link">Outcomes</a>
+                <a href="#challenges" class="nav-link">Challenges</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section id="overview" class="section fade-in">
+                <h2 class="section-title">Project Overview</h2>
+                <p>This project sought to bridge the digital divide between Bhutan and Lao PDR by building human resource capacity in Information and Communication Technology (ICT), particularly targeting underserved remote schools, colleges, and communities. With strong emphasis on gender balance and utilizing a "Train the Trainers" (TTT) model to ensure knowledge sustainability and long-term impact.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">120+</span>
+                        <span class="stat-label">Participants Trained</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">40%+</span>
+                        <span class="stat-label">Female Participation</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">80</span>
+                        <span class="stat-label">Wi-Fi Devices Deployed</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">2</span>
+                        <span class="stat-label">Countries Connected</span>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">Participating Countries</h3>
+                <div class="countries-grid">
+                    <div class="country-card">
+                        <div class="country-name">🇧🇹 Bhutan</div>
+                        <p>Royal University of Bhutan<br>Druk Research and Education Network (DrukREN)</p>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-name">🇱🇦 Laos</div>
+                        <p>National University of Laos<br>Lao Education and Research Network (LERNET)</p>
+                    </div>
+                    <div class="country-card">
+                        <div class="country-name">🇲🇾 Malaysia</div>
+                        <p>University of Malaya<br>Malaysia Research and Education Network (MYREN)</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="objectives" class="section fade-in">
+                <h2 class="section-title">Project Objectives</h2>
+                <p><strong>Main Objective:</strong> To develop sustainable ICT capacity in Bhutan and Laos through targeted training in network engineering, cybersecurity, and digital literacy, with a specific aim of addressing gender imbalance and promoting cross-country collaboration.</p>
+                
+                <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">Sub-objectives:</h3>
+                <ul style="margin-left: 2rem; line-height: 2;">
+                    <li>Train ICT professionals and faculty through CCNA, CyberOps, and IoT courses</li>
+                    <li>Strengthen digital literacy in underserved schools and communities</li>
+                    <li>Equip educational institutions with Wi-Fi infrastructure</li>
+                    <li>Develop a digital content sharing platform to foster collaboration</li>
+                </ul>
+            </section>
+
+            <section id="partners" class="section fade-in">
+                <h2 class="section-title">Partner Organizations</h2>
+                
+                <div class="partners-grid">
+                    <div class="partner-card">
+                        <div class="partner-name">Royal University of Bhutan (RUB)</div>
+                        <div class="partner-country">Bhutan</div>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-name">National University of Laos (NUOL)</div>
+                        <div class="partner-country">Laos</div>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-name">Lao Education and Research Network (LERNET)</div>
+                        <div class="partner-country">Laos</div>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-name">Druk Research and Education Network (DrukREN)</div>
+                        <div class="partner-country">Bhutan</div>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-name">University of Malaya</div>
+                        <div class="partner-country">Malaysia</div>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-name">Malaysia Research and Education Network (MYREN)</div>
+                        <div class="partner-country">Malaysia</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="training" class="section fade-in">
+                <h2 class="section-title">Training Programs</h2>
+                
+                <div class="training-grid">
+                    <div class="training-card">
+                        <div class="training-title">CCNA 1, 2, 3 Courses</div>
+                        <p>Hands-on training on networking protocols and infrastructure fundamentals.</p>
+                    </div>
+                    
+                    <div class="training-card">
+                        <div class="training-title">CyberOps Associate Training</div>
+                        <p>Focused on real-world cybersecurity threats and defensive strategies.</p>
+                    </div>
+                    
+                    <div class="training-card">
+                        <div class="training-title">IT Essentials Workshops</div>
+                        <p>Targeted teachers and support staff with little to no ICT background.</p>
+                    </div>
+                    
+                    <div class="training-card">
+                        <div class="training-title">Campus Network & Security</div>
+                        <p>Practical training on setting up and securing campus-level networks.</p>
+                    </div>
+                    
+                    <div class="training-card">
+                        <div class="training-title">Wi-Fi Equipment Deployment</div>
+                        <p>Installation and configuration of 80 Wi-Fi devices across institutions.</p>
+                    </div>
+                    
+                    <div class="training-card">
+                        <div class="training-title">Digital Platform Development</div>
+                        <p>Moodle-based LMS for sharing educational content and collaboration.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="outcomes" class="section fade-in">
+                <h2 class="section-title">Key Outcomes</h2>
+                
+                <div style="display: grid; gap: 2rem; margin: 2rem 0;">
+                    <div style="background: var(--body); padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Human Capacity Development</h4>
+                        <p>Over 120 participants trained, with female participation exceeding 40% in several sessions</p>
+                    </div>
+                    
+                    <div style="background: var(--body); padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Platform Launch</h4>
+                        <p>A content-sharing and e-learning platform was developed and maintained by LERNET</p>
+                    </div>
+                    
+                    <div style="background: var(--body); padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Wi-Fi Expansion</h4>
+                        <p>Remote schools and colleges in Bhutan and Lao were equipped with Wi-Fi devices and trained staff</p>
+                    </div>
+                    
+                    <div style="background: var(--body); padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Certification</h4>
+                        <p>Participants received internationally recognized Cisco certifications (CCNA, CyberOps)</p>
+                    </div>
+                    
+                    <div style="background: var(--body); padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Gender Inclusion</h4>
+                        <p>Empowered female ICT professionals through focused participation and mentorship</p>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">Relevant SDGs</h3>
+                <div class="sdg-tags">
+                    <span class="sdg-tag">SDG 4: Quality Education</span>
+                    <span class="sdg-tag">SDG 5: Gender Equality</span>
+                    <span class="sdg-tag">SDG 9: Industry, Innovation and Infrastructure</span>
+                    <span class="sdg-tag">SDG 17: Partnerships for the Goals</span>
+                </div>
+            </section>
+
+            <section id="challenges" class="section fade-in">
+                <h2 class="section-title">Challenges & Future Directions</h2>
+                
+                <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">Challenges Encountered</h3>
+                <div class="challenges-grid">
+                    <div class="challenge-card">
+                        <div class="challenge-title">Delayed Procurement</div>
+                        <p>Delivery of equipment in Bhutan was affected by supplier availability</p>
+                    </div>
+                    
+                    <div class="challenge-card">
+                        <div class="challenge-title">Skill Sustainability</div>
+                        <p>Concern over continuity and application of gained skills without future interventions</p>
+                    </div>
+                    
+                    <div class="challenge-card">
+                        <div class="challenge-title">Platform Usage</div>
+                        <p>Limited initial engagement with the digital LMS, requiring continuous promotion and support</p>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">Future Directions</h3>
+                <ul style="margin-left: 2rem; line-height: 2;">
+                    <li><strong>Ongoing Platform Utilization:</strong> Encourage broader usage of the Moodle LMS for national and regional collaboration</li>
+                    <li><strong>Expanded Community Training:</strong> Extend training programs to include NGOs, religious institutions, and local communities</li>
+                    <li><strong>In-house Curriculum Development:</strong> Develop customized courses using trained local faculty to ensure relevance and continuity</li>
+                    <li><strong>Cross-Border Collaboration:</strong> Maintain and deepen Lao-Bhutan technical exchange programs</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 WP6 Digital Bridges Project. Connecting Bhutan and Laos through technology and education.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for fade-in animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add active state to navigation links
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section[id]');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
